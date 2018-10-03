@@ -1,0 +1,27 @@
+{
+  "name": "elm-element",
+  "version": "1.0.0",
+  "description": "Use Elm applications as web components.",
+  "author": "Ulisses Bini de Paiva Alves <ulissesbpalves@gmail.com>",
+  "license": "MIT",
+  "main": "dist/index.cjs.js",
+  "module": "dist/index.es.js",
+  "files": [
+    "dist",
+    "src",
+    "README.md"
+  ],
+  "keywords": [
+    "elm",
+    "component",
+    "webcomponent",
+    "element",
+    "customelement"
+  ],
+  "scripts": {
+    "build": "rollup -c"
+  },
+  "devDependencies": {
+    "rollup": "^0.66.4"
+  }
+}
