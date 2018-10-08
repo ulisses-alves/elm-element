@@ -4,6 +4,7 @@ import Browser
 import Html exposing (..)
 import Html.Attributes exposing (..)
 import Html.Events exposing (..)
+import Json.Decode as Decode exposing (Decoder)
 
 
 main : Program Flags Model Msg
@@ -71,7 +72,13 @@ update msg model =
 
 subscriptions : Model -> Sub Msg
 subscriptions model =
-    onValue SetCounter
+    onValue
+        (\value ->
+            value
+                |> Decode.decodeValue (Decode.maybe Decode.int)
+                |> Result.withDefault Nothing
+                |> SetCounter
+        )
 
 
 view : Model -> Html Msg
@@ -96,4 +103,4 @@ view model =
 -- Listens to element's "value" property changes
 
 
-port onValue : (Maybe Int -> msg) -> Sub msg
+port onValue : (Decode.Value -> msg) -> Sub msg
