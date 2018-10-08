@@ -181,5 +181,8 @@ port valueChange : Json.Value -> Cmd msg
 
 Check out the ```examples``` directory for complete examples.
 
+## Two-way binding
+You might have noticed that until this point there's no way for an Elm element to activelly update its own element attributes and properties. Instead, the general strategy is to dispatch an event so the parent context can pick it up and then update attributes/properties from the ouside. Doing otherwise could lead to unpredictable side-effects, due to changes being propagated in both directions.
+
 ## Development
 Issues, suggestions and pull requests are very much welcomed. Feel free to also contact me directly on [Slack](http://elmlang.herokuapp.com/).
