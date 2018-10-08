@@ -1,8 +1,13 @@
 # elm-element
-This library is meant to streamline the process of turning Elm applications into standard HTML elements that can be used inside other applications regardless of the technology choice.
+This library is meant to streamline the process of turning [Elm](http://elm-lang.org/) applications into custom HTML elements. This is specially useful when mixing Elm with other frameworks, such as React, Vue, etc., and even within another Elm application.
 
 ## Usage
-Given an Elm app using a datepicker application as an element:
+A given date picker Elm application could be setup as follows:
+
+```index.html```
+```html
+<my-datepicker value="1538991615340"></my-datepicker>
+```
 
 ```index.js```
 ```javascript
@@ -22,6 +27,7 @@ const DatePicker = define(Elm.DatePicker.init, {
 // Register element to be used as <my-datepicker>
 customElements.define('my-datepicker', DatePicker)
 ```
+
 ```DatePicker.elm```
 ```elm
 port module DatePicker exposing (main)
@@ -42,34 +48,11 @@ port onChangeValue : ( Maybe String -> msg ) -> Sub msg
 -- Triggers the "change" event with provided value
 port valueChanged : Int -> Cmd msg
 ```
-```App.elm```
-```elm
-...
-
-type alias Model =
-  { date : Int
-  }
-
-type Msg
-  = ChangeDate Int
-
-view : Model -> Html Msg
-view model =
-  div
-    []
-    [ node "my-datepicker"
-      -- attribute values are always strings, while properties can be any JSON serializable value
-      [ attribute "value" (String.fromInt model.date)
-      , on "change" (Decode.map ChangeDate Decode.int)
-      ]
-      []
-    ]
-```
 
 ## Disclaimer
 The example above makes use of a loader such as [elm-webpack-loader](https://www.npmjs.com/package/elm-webpack-loader) and [rollup-plugin-elm](https://www.npmjs.com/package/rollup-plugin-elm) to be able to import Elm files into JavaScript.
 
-It's also important to note that Custom Elements and Shadow DOM are not yet completely supported by all major browsers, so it's advisable to use a [polyfill](https://www.webcomponents.org/polyfills) for those cases.
+It's also important to note that Custom Elements and Shadow DOM are not yet completely supported by all major browsers, so it's advisable to use a [polyfill](https://www.webcomponents.org/polyfills) when necessary.
 
 ## API
 
@@ -88,7 +71,7 @@ A function that takes an object as follows:
   }
 }
 ```
-And then returns an Elm app instance. Custom behavior can be added by specifying your own function instead of Elm's standard ```init``` function:
+And then returns an Elm app instance. Custom behavior can be achieved by specifying your own function instead of Elm's standard ```init``` function:
 ```javascript
 define(({ node, flags }) => {
   return Elm.App.init({
@@ -112,7 +95,7 @@ Observing an attribute can be specified as follows:
   }
 }
 ```
-Where ```value``` is the attribute name and ```valueChanged``` is the incoming port name. The example above is a shorthand for:
+Where ```value``` is the attribute's name and ```valueChanged``` is the incoming port name. The example above is a shorthand for:
 ```javascript
 {
   attributes: {
@@ -121,7 +104,7 @@ Where ```value``` is the attribute name and ```valueChanged``` is the incoming p
   }
 }
 ```
-and finally received using a incoming port:
+From inside the Elm application, changes to the attribute can be received by the incoming port with specified name:
 ```elm
 -- App.elm
 
@@ -195,5 +178,5 @@ port valueChange : Json.Value -> Cmd msg
 
 Check out the ```examples``` directory for complete examples.
 
-## Other
+## Development
 Issues, suggestions and pull requests are very much welcomed. Feel free to also contact me directly on [Slack](http://elmlang.herokuapp.com/).

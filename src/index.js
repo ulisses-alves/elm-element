@@ -128,15 +128,18 @@ function attributeChangedCallbackFor (attributeHandlers) {
 function createPropertyInterceptor (propertyHandler) {
   return Object.keys(propertyHandler).reduce(
     (res, name) => {
+      const privateName = `_elm_element_prop__${name}`
+
       res[name] = {
         get () {
-          return this[`_elm_element_prop__${name}`]
+          return this[privateName]
         },
         set (value) {
-          this[`_elm_element_prop__${name}`] = value
+          this[privateName] = value
           propertyHandler[name](this.app, value)
         }
       }
+
       return res
     },
     {}
@@ -181,7 +184,7 @@ function defaultSendFor (name) {
   return (app, newValue) =>
     app.ports && app.ports[name] && app.ports[name].send
       ? app.ports[name].send(newValue)
-      : console.warn(`Could not find incroming port named: ${name}`)
+      : console.warn(`Could not find incoming port named: ${name}`)
 }
 
 function defaultSubscribeFor (name) {
