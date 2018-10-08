@@ -2,7 +2,7 @@
 This library is meant to streamline the process of turning Elm applications into standard HTML elements that can be used inside other applications regardless of the technology choice.
 
 ## Usage
-Given  an Elm app that wants to use a DatePicker application as an element:
+Given an Elm app using a datepicker application as an element:
 
 ```index.js```
 ```javascript
@@ -11,7 +11,7 @@ import { Elm } from './DatePicker.elm'
 
 // Define the custom element class
 const DatePicker = define(Elm.DatePicker.init, {
-  attributes: {
+  properties: {
     value: 'onChangeValue'
   },
   events: {
@@ -29,7 +29,7 @@ port module DatePicker exposing (main)
 main : Program Flags Model Msg
 main ...
 
--- Initial observed attribute values are sent as flags
+-- Initial observed attributes and properties values are passed as flags
 type alias Flags =
   { attributes :
     { value : Maybe String
@@ -58,7 +58,7 @@ view model =
   div
     []
     [ node "my-datepicker"
-      -- Attributes should be used instead of properties
+      -- attribute values are always strings, while properties can be any JSON serializable value
       [ attribute "value" (String.fromInt model.date)
       , on "change" (Decode.map ChangeDate Decode.int)
       ]
@@ -102,24 +102,59 @@ define(({ node, flags }) => {
 ```
 
 ### ```config```
+
 #### Attributes
 Observing an attribute can be specified as follows:
 ```javascript
 {
   attributes: {
-    'my-attribute': 'myAttributeChanged'
+    value: 'valueChanged'
   }
 }
 ```
-as well as:
+Where ```value``` is the attribute name and ```valueChanged``` is the incoming port name. The example above is a shorthand for:
 ```javascript
 {
   attributes: {
-    'my-attribute': (app, newValue) =>
-      app.ports.myAttributeChanged.send(newValue)
+    value: (app, newValue) =>
+      app.ports.valueChanged.send(newValue)
   }
 }
 ```
+and finally received using a incoming port:
+```elm
+-- App.elm
+
+port valueChanged : (Maybe String -> msg) -> Sub msg
+```
+
+#### Properties
+Observing a properties works much like as attributes:
+```javascript
+{
+  properties: {
+    value: 'valueChanged'
+  }
+}
+```
+As well as:
+```javascript
+{
+  properties: {
+    value: (app, newValue) =>
+      app.ports.valueChanged.send(newValue)
+  }
+}
+```
+With the difference that properties can be any JSON serializable value:
+```elm
+-- App.elm
+
+import Json.Decode as Json
+
+port valueChanged : (Json.Value -> msg) -> Sub msg
+```
+
 #### Events
 Similarly, events can be defined as:
 ```javascript
@@ -129,7 +164,7 @@ Similarly, events can be defined as:
   }
 }
 ```
-which is a shorthand for:
+Which is a shorthand for:
 ```javascript
 {
   events: {
@@ -138,7 +173,7 @@ which is a shorthand for:
   }
 }
 ```
-and if you want to take charge of creating the custom event yourself, it can be done as follows:
+And if you want to take charge of creating the custom event yourself, it can be done as follows:
 ```javascript
 {
   events: {
@@ -151,7 +186,14 @@ and if you want to take charge of creating the custom event yourself, it can be 
   }
 }
 ```
-Check out the ```examples``` directory for complete exampels.
+Events can be dispached from Elm using an outgoing port:
+```elm
+-- App.elm
+
+port valueChange : Json.Value -> Cmd msg
+```
+
+Check out the ```examples``` directory for complete examples.
 
 ## Other
-Issues and suggestions are very much welcomed, as well pull requests. Feel free to also contact me directly on [Slack](http://elmlang.herokuapp.com/) under the same user name.
+Issues, suggestions and pull requests are very much welcomed. Feel free to also contact me directly on [Slack](http://elmlang.herokuapp.com/).
