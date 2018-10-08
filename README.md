@@ -67,11 +67,14 @@ A function that takes an object as follows:
   flags: {
     attributes: {
       [name: string]: null | string
+    },
+    properties: {
+      [name: string]: null | any
     }
   }
 }
 ```
-And then returns an Elm app instance. Custom behavior can be achieved by specifying your own function instead of Elm's standard ```init``` function:
+And then returns an Elm app instance. You can either specify the application's built-in ```init``` or your own to extend the default arguments:
 ```javascript
 define(({ node, flags }) => {
   return Elm.App.init({
