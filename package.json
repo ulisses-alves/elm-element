@@ -1,8 +1,9 @@
 {
   "name": "elm-element",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Use Elm applications as web components.",
   "author": "Ulisses Bini de Paiva Alves <ulissesbpalves@gmail.com>",
+  "repository": "ulisses-alves/elm-element",
   "license": "MIT",
   "main": "dist/index.cjs.js",
   "module": "dist/index.es.js",
