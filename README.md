@@ -2,7 +2,7 @@
 This library is meant to streamline the process of turning [Elm](http://elm-lang.org/) applications into custom HTML elements. This is specially useful when mixing Elm with other frameworks, such as React, Vue, etc., and even within another Elm application.
 
 ## Usage
-A given date picker Elm application could be setup as follows:
+Let's say we
 
 ```index.html```
 ```html
@@ -16,7 +16,7 @@ import { Elm } from './DatePicker.elm'
 
 // Define the custom element class
 const DatePicker = define(Elm.DatePicker.init, {
-  properties: {
+  attributes: {
     value: 'onChangeValue'
   },
   events: {
@@ -46,13 +46,15 @@ type alias Flags =
 port onChangeValue : ( Maybe String -> msg ) -> Sub msg
 
 -- Triggers the "change" event with provided value
-port valueChanged : Int -> Cmd msg
+port valueChanged : String -> Cmd msg
 ```
 
 ## Disclaimer
 The example above makes use of a loader such as [elm-webpack-loader](https://www.npmjs.com/package/elm-webpack-loader) and [rollup-plugin-elm](https://www.npmjs.com/package/rollup-plugin-elm) to be able to import Elm files into JavaScript.
 
 It's also important to note that Custom Elements and Shadow DOM are not yet completely supported by all major browsers, so it's advisable to use a [polyfill](https://www.webcomponents.org/polyfills) when necessary.
+
+Check you the ```examples``` folder to see how it can be used.
 
 ## API
 
@@ -74,7 +76,7 @@ A function that takes an object as follows:
   }
 }
 ```
-And then returns an Elm app instance. You can either specify the application's built-in ```init``` or your own to extend the default arguments:
+And then returns an Elm app instance. You can either specify the application's built-in ```init``` or your own in order to extend the default arguments:
 ```javascript
 define(({ node, flags }) => {
   return Elm.App.init({
@@ -90,7 +92,7 @@ define(({ node, flags }) => {
 ### ```config```
 
 #### Attributes
-Observing an attribute can be specified as follows:
+Observing an attribute can be done as follows:
 ```javascript
 {
   attributes: {
@@ -107,7 +109,7 @@ Where ```value``` is the attribute's name and ```valueChanged``` is the incoming
   }
 }
 ```
-From inside the Elm application, changes to the attribute can be received by the incoming port with specified name:
+From inside the Elm application, changes to the attribute can be received by the incoming port with specified name. Note that attribute values are always either ```null``` or ```string```:
 ```elm
 -- App.elm
 
@@ -115,7 +117,7 @@ port valueChanged : (Maybe String -> msg) -> Sub msg
 ```
 
 #### Properties
-Observing a properties works much like as attributes:
+Observing properties works much like attributes:
 ```javascript
 {
   properties: {
@@ -132,7 +134,7 @@ As well as:
   }
 }
 ```
-With the difference that properties can be any JSON serializable value:
+With the difference that property values can be any JSON serializable value:
 ```elm
 -- App.elm
 
@@ -182,7 +184,7 @@ port valueChange : Json.Value -> Cmd msg
 Check out the ```examples``` directory for complete examples.
 
 ## Two-way binding
-You might have noticed that until this point there's no way for an Elm element to activelly update its own element attributes and properties. Instead, the general strategy is to dispatch an event so the parent context can pick it up and then update attributes/properties from the ouside. Doing otherwise could lead to unpredictable side-effects, due to changes being propagated in both directions.
+You might have noticed that until this point there's no way for an Elm element to actively update its own element attributes and properties. Instead, the general strategy is to dispatch an event so the parent context can pick it up and then update attributes/properties from the ouside. Doing otherwise could lead to unpredictable side-effects, due to changes being propagated in both directions.
 
 ## Development
 Issues, suggestions and pull requests are very much welcomed. Feel free to also contact me directly on [Slack](http://elmlang.herokuapp.com/).
