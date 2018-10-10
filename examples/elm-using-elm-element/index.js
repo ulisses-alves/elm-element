@@ -1,3 +1,4 @@
+import '@webcomponents/webcomponentsjs/webcomponents-bundle'
 import { define } from 'elm-element'
 import app from './App.elm'
 import tooltip from './Tooltip.elm'

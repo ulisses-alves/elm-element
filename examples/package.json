@@ -10,7 +10,7 @@
     "basic-event-binding": "parcel ./basic-event-binding/index.html",
     "basic-property-binding": "parcel ./basic-property-binding/index.html",
     "elm-using-elm-element": "parcel ./elm-using-elm-element/index.html",
-    "using-polyfill": "parcel ./using-polyfill/index.html"
+    "simple-dropdown": "parcel ./simple-dropdown/index.html"
   },
   "keywords": [],
   "devDependencies": {
