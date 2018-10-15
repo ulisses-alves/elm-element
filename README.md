@@ -2,7 +2,7 @@
 This library is meant to streamline the process of turning [Elm](http://elm-lang.org/) applications into custom HTML elements. This is specially useful when mixing Elm with other frameworks, such as React, Vue, etc., and even within another Elm application.
 
 ## Usage
-Let's say we
+Let's say we want to create a date picker component written in Elm:
 
 ```index.html```
 ```html
